@@ -12,3 +12,5 @@ Planning to add:
 2. Undo/Redo
 3. Processing invites logic (allow users to iterate through invites of a certain location/mode)
 4. Import/Export to csv
+5. Improve quality to use templating (and remove structure coded in JS)
+6. Tests
