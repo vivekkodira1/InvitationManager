@@ -65,7 +65,7 @@ require(["jquery"],
             });
 
             var getInviteeJSON = function(){
-                return JSON.parse(localStorage.invitees || "{}");
+                return JSON.parse(localStorage.invitees || '{}');
             };
 
             var storeInvitees = function(inviteesJSON){
@@ -82,6 +82,18 @@ require(["jquery"],
                 for(var i=0;i<numberOfDependents;i++){
                     getTemplate(attendingInputsTemplateSelector).appendTo(dependentsDivSelector);
                 }
+            });
+
+            $(document).on('click','.showDemoContent',function(e){
+                storeInvitees({"Robert Baratheon":{"location":"Kings Landing","address":"Palace Kings Landing.","tags":"King, Baratheon","inviteMode":"Visit","invitedFlag":"No","dependents":{"Robert Baratheon":"No","Cersei Lannister":"Maybe","Gendry":"Maybe"}},"Stannis Baratheon":{"location":"Dragonstone","address":"Fort Dragonstone","tags":"Baratheon King","inviteMode":"Visit","invitedFlag":"No","dependents":{"Stannis Baratheon":"Maybe","Melisandre":"Maybe","Selyse Florent":"Maybe","Shireen Baratheon":"Maybe"}},"Renly Baratheon":{"location":"","address":"Graveyard","tags":"King deceased Baratheon","inviteMode":"Visit","invitedFlag":"No","dependents":{"Renly Baratheon":"No"}},"Tywin Lannister":{"location":"Casterly Rock","address":"Palace Casterly Rock","tags":"deceased Lannister","inviteMode":"Visit","invitedFlag":"No","dependents":{"Tywin Lannister":"No","Joanna Lannister":"No"}},"Daenerys Targaryen":{"location":"Free cities","address":"Free Cities","tags":"Queen Targaryen","inviteMode":"Visit","invitedFlag":"No","dependents":{"Daenerys Targaryen":"Maybe","Drogon":"Maybe","Viserion":"Maybe","Rhaegal":"Maybe"}},"Jamie Lannister":{"location":"Kings Landing","address":"Palace Kings Landing","tags":"Lannister","inviteMode":"Visit","invitedFlag":"No","dependents":{"Jamie Lannister":"Maybe","Joffrey Baratheon":"No","Myrcella Baratheon":"Maybe","Tommen Baratheon":"Maybe"}},"Eddard Stark":{"location":"Winterfell","address":"Winterfell","tags":"deceased stark","inviteMode":"Visit","invitedFlag":"No","dependents":{"Eddard Stark":"Maybe","Catelyn Stark":"Maybe","Jon Snow":"Maybe","Robb Stark":"Maybe","Sansa Stark":"Maybe","Arya Stark":"Maybe","Bran Stark":"Maybe","Rickon Stark":"Maybe"}},"Tyrion Lannister":{"location":"Free cities","address":"Free cities","tags":"Lannister","inviteMode":"Visit","invitedFlag":"No","dependents":{"Tyrion Lannister":"Maybe"}}});
+                displayContent();
+                $('.tab.showInviteeList').click();
+            });
+
+            $(document).on('click','.removeAll',function(e){
+                storeInvitees({});
+                displayContent();
+                $('.tab.showInviteeList').click();
             });
 
             $(document).on('click',removeDependentSelector,function(e){
