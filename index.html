@@ -1,146 +1,184 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Invitation Manager</title>
-		<link rel="stylesheet" href="assets/styles/site.css" media="screen" />
-	</head>
-	<body>
-		<script type="text/html" class="attendingInputs">
-			<div class="inputFormRow dependentDetails">
-				<div class="inputFormColumn">
-					<label class="inline">Name</label>
-					<input type="text" name="dependentName"/>
-				</div><!--inputFormColumn-->
-				<div class="inputFormColumn">
-					<label class="inline">Attending</label>
-					<select name="attendingFlag">
-						<option value="Maybe" selected="selected">Maybe</option>
-						<option value="Yes">Yes</option>
-						<option value="No">No</option>
-					</select>
-				</div><!--inputFormColumn-->
-				<div class="inputFormColumn">
-					<span class="clickable bolder removeDependent">-</span>
-				</div><!--inputFormColumn-->
-			</div><!--inputFormRow-->
-		</script>
-				
-		<script type="text/html" class="displayContent">
-			<div class="inputFormRow">
-				<div class="inputFormColumn">
-					<label class="inline bolder"></label>: <span></span>
-				</div><!--inputFormColumn-->
-			</div><!--inputFormRow-->
-		</script><!--displayContent-->
-		<script type="text/html" class="inputContentTemplate">
-			<div class="inputFormRow">
-				<div class="inputFormColumn">
-					<label class="leftMargin10 hint inline">Use this form to add new invitees or edit details of existing ones</label>
-				</div><!--inputFormColumn-->
-			</div><!--inputFormRow-->
-			<div class="inputFormRow">
-				<div class="inputFormColumn">
-					<label class="inline">Invitee:</label>
-					<input type="text" name="inviteeName"/>
-					<label class="leftMargin10 hint inline">Person to whom the invite is to be given (is automatically added as a dependent)</label>
-				</div><!--inputFormColumn-->
-			</div><!--inputFormRow-->
-			<div class="inputFormRow">
-				<div class="inputFormColumn">
-					<label class="inline">Location:</label>
-					<input type="text" name="inviteeLocation"/>
-					<label class="leftMargin10 hint inline">City (will be used by the system to search - coming soon)</label>
-				</div><!--inputFormColumn-->
-			</div><!--inputFormRow-->
-			<div class="inputFormRow">
-				<div class="inputFormColumn">
-					<label class="inline">Tags:</label>
-					<input type="text" name="inviteeTags"/>
-					<label class="leftMargin10 hint inline">Tags to group invitees by (ex: family, friends, office, etc.. Will be used by the system to search - coming soon)</label>
-				</div><!--inputFormColumn-->
-			</div><!--inputFormRow-->
-			<div class="inputFormRow">
-				<div class="inputFormColumn">
-					<label class="inline">Visit/Call:</label>
-					<select name="inviteModeFlag">
-						<option value="Visit">Visit</option>
-						<option value="Call">Call</option>
-					</select>
-					<label class="leftMargin10 hint inline">Will you be visiting this person or calling them? (Is displayed in summary - other uses coming soon)</label>
-				</div><!--inputFormColumn-->
-			</div><!--inputFormRow-->
-			<div class="inputFormRow">
-				<div class="inputFormColumn">
-					<label class="inline">Invited:</label>
-					<select name="invitedFlag">
-						<option value="No">No</option>
-						<option value="Yes">Yes</option>
-					</select>
-					<label class="leftMargin10 hint inline">Once you've invited this person, mark this as "Yes".</label>
-				</div><!--inputFormColumn-->
-			</div><!--inputFormRow-->
-			<div class="inputFormRow">
-				<div class="inputFormColumn">
-					<label class="inline">Address:</label><label class="leftMargin10 hint inline">Postal address (optional)</label><br/>
-					<textarea name="inviteeAddress" cols='50' rows='5'></textarea>
-				</div><!--inputFormColumn-->
-			</div><!--inputFormRow-->
-			<div class="inputFormRow addDependentDiv hidden">
-				<div class="inputFormColumn">
-					<label class="inline">Dependents</label>
-					<input class="numberInput" type="text" name="numberOfDependents"/>
-					<span class="leftMargin5 bolder addDependents clickable">+</span>
-					<label class="leftMargin10 hint inline">Add dependents who will be invited/may attend</label>
-					<div class="dependents">
-					</div>
-				</div><!--inputFormColumn-->
-			</div><!--inputFormRow-->
-			<div class="inputFormRow">
-				<button class="addInvitee" name ="inviteeAction" disabled="disabled">Add</button>
-			</div>
-		</script><!--inputContentTemplate-->
-		<ul class="tabs">
-			<li class="tab clickable active showInviteeList" data-target="listOfInvitees">Invitees List</li>
-			<li class="tab clickable showAddEditInviteeScreen" data-target="inputForm">Add/Edit Invitees</li>
-			<li class="tab clickable showInviteeSummary" data-target="inviteeSummary">Summary</li>
-			<li class="tab clickable showRawContent" data-target="rawOutput">Raw content</li>
-		</ul><!--tabs-->
-		<div class="inputForm hidden tabContent">
+  <head>
+    <title>Invitation Manager</title>
+    <link rel="stylesheet" href="assets/styles/site.css" media="screen" />
+  </head>
+  <body>
+    <script type="text/html" class="attendingInputs">
+      <div class="inputFormRow dependentDetails">
+        <div class="inputFormColumn">
+          <label class="inline">Name</label>
+          <input type="text" name="dependentName"/>
+        </div><!--inputFormColumn-->
+        <div class="inputFormColumn">
+          <label class="inline">Attending</label>
+          <select name="attendingFlag">
+            <option value="Maybe" selected="selected">Maybe</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div><!--inputFormColumn-->
+        <div class="inputFormColumn">
+          <span class="clickable bolder removeDependent">-</span>
+        </div><!--inputFormColumn-->
+      </div><!--inputFormRow-->
+    </script>
+        
+    <script type="text/html" class="displayContent">
+      <div class="inputFormRow">
+        <div class="inputFormColumn">
+          <label class="inline bolder"></label>: <span></span>
+        </div><!--inputFormColumn-->
+      </div><!--inputFormRow-->
+    </script><!--displayContent-->
+    <script type="text/html" class="inputContentTemplate">
+      <div class="inputFormRow">
+        <div class="inputFormColumn">
+          <label class="leftMargin10 hint inline">Use this form to add new invitees or edit details of existing ones</label>
+        </div><!--inputFormColumn-->
+      </div><!--inputFormRow-->
+      <div class="inputFormRow">
+        <div class="inputFormColumn">
+          <label class="inline">Invitee:</label>
+          <input type="text" name="inviteeName"/>
+          <label class="leftMargin10 hint inline">Person to whom the invite is to be given (is automatically added as a dependent)</label>
+        </div><!--inputFormColumn-->
+      </div><!--inputFormRow-->
+      <div class="inputFormRow">
+        <div class="inputFormColumn">
+          <label class="inline">Location:</label>
+          <input type="text" name="inviteeLocation"/>
+          <label class="leftMargin10 hint inline">City (will be used by the system to search - coming soon)</label>
+        </div><!--inputFormColumn-->
+      </div><!--inputFormRow-->
+      <div class="inputFormRow">
+        <div class="inputFormColumn">
+          <label class="inline">Tags:</label>
+          <input type="text" name="inviteeTags"/>
+          <label class="leftMargin10 hint inline">Tags to group invitees by (ex: family, friends, office, etc.. Will be used by the system to search - coming soon)</label>
+        </div><!--inputFormColumn-->
+      </div><!--inputFormRow-->
+      <div class="inputFormRow">
+        <div class="inputFormColumn">
+          <label class="inline">Visit/Call:</label>
+          <select name="inviteModeFlag">
+            <option value="Visit">Visit</option>
+            <option value="Call">Call</option>
+          </select>
+          <label class="leftMargin10 hint inline">Will you be visiting this person or calling them? (Is displayed in summary - other uses coming soon)</label>
+        </div><!--inputFormColumn-->
+      </div><!--inputFormRow-->
+      <div class="inputFormRow">
+        <div class="inputFormColumn">
+          <label class="inline">Invited:</label>
+          <select name="invitedFlag">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+          <label class="leftMargin10 hint inline">Once you've invited this person, mark this as "Yes".</label>
+        </div><!--inputFormColumn-->
+      </div><!--inputFormRow-->
+      <div class="inputFormRow">
+        <div class="inputFormColumn">
+          <label class="inline">Address:</label><label class="leftMargin10 hint inline">Postal address (optional)</label><br/>
+          <textarea name="inviteeAddress" cols='50' rows='5'></textarea>
+        </div><!--inputFormColumn-->
+      </div><!--inputFormRow-->
+      <div class="inputFormRow addDependentDiv hidden">
+        <div class="inputFormColumn">
+          <label class="inline">Dependents</label>
+          <input class="numberInput" type="text" name="numberOfDependents"/>
+          <span class="leftMargin5 bolder addDependents clickable">+</span>
+          <label class="leftMargin10 hint inline">Add dependents who will be invited/may attend</label>
+          <div class="dependents">
+          </div>
+        </div><!--inputFormColumn-->
+      </div><!--inputFormRow-->
+      <div class="inputFormRow">
+        <button class="addInvitee" name ="inviteeAction" disabled="disabled">Add</button>
+      </div>
+    </script><!--inputContentTemplate-->
+    <ul class="tabs">
+      <li class="tab clickable introduction" data-target="whatThisIs">Read Me</li>
+      <li class="tab clickable active showInviteeList" data-target="listOfInvitees">Invitees List</li>
+      <li class="tab clickable showAddEditInviteeScreen" data-target="inputForm">Add/Edit Invitees</li>
+      <li class="tab clickable showInviteeSummary" data-target="inviteeSummary">Summary</li>
+      <li class="tab clickable showRawContent" data-target="rawOutput">Raw content</li>
+    </ul><!--tabs-->
+    <div class="whatThisIs hidden tabContent">
+    <p>
+      <h3>What this application is</h3>
+      <ul>
+        <li>This is just a HTML page and some JavaScript. Your content is not sent to a server or stored onto a file. So its *very* important that you save the raw content yourself</li>
+        <li>It attempts to replace using spreadsheets (which is how most people manage invitee lists today) to add/edit invitees</li>
+        <li>The list display is intentionally kept 'table-y' so that people find the functionality familiar</li>
+      </ul>
+    </p>
+    <p>
+      <h3>Using this application</h3>
+      <ul>
+        <li>The tab: 'Add/Edit Invitees' allows you to add invitees, their details (ex: addresses) and dependents</li>
+        <li>The "Invitees List" displays the complete list of invitees</li>
+        <li>The "Summary" tab displays summary information such as the number of invitees, the number of attendees, etc. </li>
+        <li>The tab "Raw content" can be used to copy content generated by the system to a file or to import content</li>
+      </ul>
+    </p>
+    <p>
+      <h3>Functionality coming soon</h3>
+      <ul>
+        <li>Search (by name, tags, location, etc.)</li>
+        <li>Redo/Undo</li>
+        <li>"Process". Will allow users to process invites one by one and mark them as closed</li>
+        <li>Save to File</li>
+      </ul>
+    </p>
+    <p>
+      <h3>Demo</h3>
+      <button class="showDemoContent">Show me some dummy invitees</button>
+    </p>
+    <p>
+      <h3>Feedback</h3>
+      <span>You are welcome to copy/reuse/rehash this as you'd like. If you want to request a feature or report a bug, please submit it at <a href="https://github.com/vivekKodira/InvitationManager/issues">github</a> where this code is hosted</span>
+    </p>
 
-		</div><!--inputForm-->
-		<div class="inviteeSummary hidden tabContent">
-			<div class="inputFormRow">
-				<div class="inputFormColumn">
-					<label class="leftMargin10 hint inline">This tab displays a summary of the invites listing the totals and/or pending invites/attendees</label>
-				</div><!--inputFormColumn-->
-			</div><!--inputFormRow-->
-			<div class="inviteeSummaryDiv"></div>
-		</div><!--inviteeSummary-->
-		<div class="listOfInvitees tabContent">
-			<div class="inputFormRow">
-				<div class="inputFormColumn">
-					<label class="leftMargin10 hint inline">This tab displays a raw list of all attendees</label>
-				</div><!--inputFormColumn-->
-			</div><!--inputFormRow-->			
-			<table>
-				<thead>
-					<tr>
-						<th>Invitee</th><th>Location</th><th>Address</th><th>Dependents</th><th>Invitation mode</th><th>Invited?</th><th>Attending?</th><th>Tags</th><th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
-		<div class="rawOutput hidden tabContent">
-			<div class="inputFormRow">
-				<div class="inputFormColumn">
-					<label class="leftMargin10 hint inline">This tab displays raw content generated by the system. Save this for later use Or click import to generate the list from saved content</label>
-				</div><!--inputFormColumn-->
-			</div><!--inputFormRow-->
-			<button class="importFromRawContent">Import</button>
-			<textarea class="rawOutputContainer" cols="190" rows="20"> </textarea>
-		</div>
-	</body>
-	<script data-main="assets/scripts/invitationManager.js" src="assets/scripts/thirdPartyScripts/require.js"></script>
+    </div><!--inputForm-->
+    <div class="inputForm hidden tabContent">
+
+    </div><!--inputForm-->
+    <div class="inviteeSummary hidden tabContent">
+      <div class="inputFormRow">
+        <div class="inputFormColumn">
+          <label class="leftMargin10 hint inline">This tab displays a summary of the invites listing the totals and/or pending invites/attendees</label>
+        </div><!--inputFormColumn-->
+      </div><!--inputFormRow-->
+      <div class="inviteeSummaryDiv"></div>
+    </div><!--inviteeSummary-->
+    <div class="listOfInvitees tabContent">
+      <div class="inputFormRow">
+        <div class="inputFormColumn">
+          <label class="leftMargin10 hint inline">This tab displays a raw list of all attendees</label>
+        </div><!--inputFormColumn-->
+      </div><!--inputFormRow-->     
+      <table>
+        <thead>
+          <tr>
+            <th>Invitee</th><th>Location</th><th>Address</th><th>Dependents</th><th>Invitation mode</th><th>Invited?</th><th>Attending?</th><th>Tags</th><th>Actions <button class="removeAll">Remove All</button></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    <div class="rawOutput hidden tabContent">
+      <div class="inputFormRow">
+        <div class="inputFormColumn">
+          <label class="leftMargin10 hint inline">This tab displays raw content generated by the system. Save this for later use Or click import to generate the list from saved content</label>
+        </div><!--inputFormColumn-->
+      </div><!--inputFormRow-->
+      <button class="importFromRawContent">Import</button>
+      <textarea class="rawOutputContainer" cols="190" rows="20"> </textarea>
+    </div>
+  </body>
+  <script data-main="assets/scripts/invitationManager.js" src="assets/scripts/thirdPartyScripts/require.js"></script>
 </html>
