@@ -1,0 +1,84 @@
+.hidden{
+	display:none !important;
+}
+.leftMargin5{
+	margin-left:5px;
+}
+.leftMargin10{
+	margin-left:10px;
+}
+.inputFormRow{
+	display:table-row;
+}
+.inputFormColumn{
+	display:table-cell;
+}
+.bolder{
+	font-weight: bolder
+}
+.clickable{
+	cursor:pointer;
+}
+label{
+	display:block;
+}
+label.inline{
+	display:inline;
+}
+table{
+	width:100%;
+	border:1px solid;
+}
+td{
+	border-top:1px solid;
+}
+td,th{
+	border-right:1px solid;
+}
+td:last-child,th:last-child{
+	border-right:none;
+}
+.halfSized{
+	width:50%;
+}
+
+.group:after
+{
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.clear { clear: both; }
+
+.floatLeft{
+	float:left;
+}
+.tabs{
+    margin-bottom: 0;
+	
+    border-bottom: 1px solid;
+}
+.tab{
+	display:inline-block;
+	background-color: whitesmoke;
+	border: 1px solid;
+	border-radius: 5px;
+	padding: 10px 10px 5px 5px;
+	margin:5px 5px 0 0 ;
+}
+.tab.active{
+	background-color:yellow;
+}
+.tabContent{
+	margin-top:10px;
+}
+.hint{
+	font-style: italic;
+	font-size:smaller;
+}
+.numberInput{
+	width: 20px;
+}
