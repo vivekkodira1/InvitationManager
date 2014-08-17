@@ -82,3 +82,6 @@ td:last-child,th:last-child{
 .numberInput{
 	width: 20px;
 }
+button{
+	cursor:pointer;
+}
