@@ -280,9 +280,9 @@ require(["jquery"],
                         $('<td>').html(dependents[dependent] ).appendTo(tableRow);
                         $('<td>').html((dependent == invitee)?(inviteeDetails.tags || "NA"):"").appendTo(tableRow);
                         var actionColumn = $('<td>')
-                        $('<button>',{class:deleteDependentClass}).html("Delete").appendTo(actionColumn);
+                        $('<button>',{class:deleteDependentClass,"title":"delete this dependent/invitee"}).html("Delete").appendTo(actionColumn);
                         if(dependent==invitee){
-                            $('<button>',{class:showEditFormClass}).html("Edit").appendTo(actionColumn);
+                            $('<button>',{class:showEditFormClass,"title":"Edit this invitee\'s details"}).html("Edit").appendTo(actionColumn);
                         }
                         actionColumn.appendTo(tableRow);
                         tableRow.appendTo(tableDiv);

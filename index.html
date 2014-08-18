@@ -20,7 +20,7 @@
           </select>
         </div><!--inputFormColumn-->
         <div class="inputFormColumn">
-          <span class="clickable bolder removeDependent">-</span>
+          <span class="clickable bolder removeDependent" title="Remove this dependent">-</span>
         </div><!--inputFormColumn-->
       </div><!--inputFormRow-->
     </script>
@@ -88,15 +88,15 @@
       <div class="inputFormRow addDependentDiv hidden">
         <div class="inputFormColumn">
           <label class="inline">Dependents</label>
-          <input class="numberInput" type="text" name="numberOfDependents"/>
-          <span class="leftMargin5 bolder addDependents clickable">+</span>
+          <input class="numberInput" type="text" value="1" name="numberOfDependents" title/>
+          <span class="leftMargin5 bolder addDependents clickable" title="Click to add dependents">+</span>
           <label class="leftMargin10 hint inline">Add dependents who will be invited/may attend</label>
           <div class="dependents">
           </div>
         </div><!--inputFormColumn-->
       </div><!--inputFormRow-->
       <div class="inputFormRow">
-        <button class="addInvitee" name ="inviteeAction" disabled="disabled">Add</button>
+        <button class="addInvitee" name ="inviteeAction" title="Add this invitee to the system" disabled="disabled">Add</button>
       </div>
     </script><!--inputContentTemplate-->
     <ul class="tabs">
@@ -163,7 +163,7 @@
       <table>
         <thead>
           <tr>
-            <th>Invitee</th><th>Location</th><th>Address</th><th>Dependents</th><th>Invitation mode</th><th>Invited?</th><th>Attending?</th><th>Tags</th><th>Actions <button class="removeAll">Remove All</button></th>
+            <th>Invitee</th><th>Location</th><th>Address</th><th>Dependents</th><th>Invitation mode</th><th>Invited?</th><th>Attending?</th><th>Tags</th><th>Actions <button class="removeAll" title="Remove all invitees">Remove All</button></th>
           </tr>
         </thead>
         <tbody>
