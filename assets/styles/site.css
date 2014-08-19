@@ -35,8 +35,15 @@ td{
 td,th{
 	border-right:1px solid;
 }
+th{
+	color:white;
+	background-color:black;
+}
 td:last-child,th:last-child{
 	border-right:none;
+}
+tr:nth-child(odd){
+	background-color:beige;
 }
 .halfSized{
 	width:50%;
@@ -84,4 +91,10 @@ td:last-child,th:last-child{
 }
 button{
 	cursor:pointer;
+}
+.fa{
+    color: rgb(65,56,56);
+}
+.white{
+	color:white;
 }
