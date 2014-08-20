@@ -87,7 +87,7 @@ tr:nth-child(odd){
 	font-size:smaller;
 }
 .numberInput{
-	width: 20px;
+	width: 40px;
 }
 button{
 	cursor:pointer;

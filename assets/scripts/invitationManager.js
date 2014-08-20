@@ -77,6 +77,19 @@ require(["jquery"],
             var getCSSSafeName = function(name){
                 return name.replace(/\s/g,"_");
             };
+
+            var getTags = function(){
+                var inviteeJSON = getInviteeJSON();
+                var tagJSON = {};
+                for(var invitee in inviteeJSON){
+                    var inviteeDetails = inviteeJSON[invitee];
+                    var tags = inviteeDetails.tags || {};
+                    for(var tagName in tags){
+                        tagJSON[tagName] = (tagJSON[tagName])?tagJSON[tagName]+1:1;
+                    }
+                }
+                return tagJSON;
+            };
             
             $(document).on('click',addDependentsSelector,function(e){
                 var numberOfDependents = $('input[name="numberOfDependents"]').val() || 0;
@@ -87,7 +100,7 @@ require(["jquery"],
             });
 
             $(document).on('click','.showDemoContent',function(e){
-                storeInvitees({"Robert Baratheon":{"location":"Kings Landing","address":"Palace Kings Landing.","tags":"King, Baratheon","inviteMode":"Visit","invitedFlag":"No","dependents":{"Robert Baratheon":"No","Cersei Lannister":"Maybe","Gendry":"Maybe"}},"Stannis Baratheon":{"location":"Dragonstone","address":"Fort Dragonstone","tags":"Baratheon King","inviteMode":"Visit","invitedFlag":"No","dependents":{"Stannis Baratheon":"Maybe","Melisandre":"Maybe","Selyse Florent":"Maybe","Shireen Baratheon":"Maybe"}},"Renly Baratheon":{"location":"","address":"Graveyard","tags":"King deceased Baratheon","inviteMode":"Visit","invitedFlag":"No","dependents":{"Renly Baratheon":"No"}},"Tywin Lannister":{"location":"Casterly Rock","address":"Palace Casterly Rock","tags":"deceased Lannister","inviteMode":"Visit","invitedFlag":"No","dependents":{"Tywin Lannister":"No","Joanna Lannister":"No"}},"Daenerys Targaryen":{"location":"Free cities","address":"Free Cities","tags":"Queen Targaryen","inviteMode":"Visit","invitedFlag":"No","dependents":{"Daenerys Targaryen":"Maybe","Drogon":"Maybe","Viserion":"Maybe","Rhaegal":"Maybe"}},"Jamie Lannister":{"location":"Kings Landing","address":"Palace Kings Landing","tags":"Lannister","inviteMode":"Visit","invitedFlag":"No","dependents":{"Jamie Lannister":"Maybe","Joffrey Baratheon":"No","Myrcella Baratheon":"Maybe","Tommen Baratheon":"Maybe"}},"Eddard Stark":{"location":"Winterfell","address":"Winterfell","tags":"deceased stark","inviteMode":"Visit","invitedFlag":"No","dependents":{"Eddard Stark":"Maybe","Catelyn Stark":"Maybe","Jon Snow":"Maybe","Robb Stark":"Maybe","Sansa Stark":"Maybe","Arya Stark":"Maybe","Bran Stark":"Maybe","Rickon Stark":"Maybe"}},"Tyrion Lannister":{"location":"Free cities","address":"Free cities","tags":"Lannister","inviteMode":"Visit","invitedFlag":"No","dependents":{"Tyrion Lannister":"Maybe"}}});
+                storeInvitees({"Robert Baratheon":{"location":"Kings Landing","address":"Palace Kings Landing.","tags":{"King" : " ", "Baratheon": " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Robert Baratheon":"No","Cersei Lannister":"Maybe","Gendry":"Maybe"}},"Stannis Baratheon":{"location":"Dragonstone","address":"Fort Dragonstone","tags":{"Baratheon" : " ", "King": " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Stannis Baratheon":"Maybe","Melisandre":"Maybe","Selyse Florent":"Maybe","Shireen Baratheon":"Maybe"}},"Renly Baratheon":{"location":"","address":"Graveyard","tags":{"King" : " ", "deceased" :" ", "Baratheon" : " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Renly Baratheon":"No"}},"Tywin Lannister":{"location":"Casterly Rock","address":"Palace Casterly Rock","tags":{"deceased" : " ", "Lannister": " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Tywin Lannister":"No","Joanna Lannister":"No"}},"Daenerys Targaryen":{"location":"Free cities","address":"Free Cities","tags":{"Queen" : " ", "Targaryen": " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Daenerys Targaryen":"Maybe","Drogon":"Maybe","Viserion":"Maybe","Rhaegal":"Maybe"}},"Jamie Lannister":{"location":"Kings Landing","address":"Palace Kings Landing","tags":{"Lannister" : " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Jamie Lannister":"Maybe","Joffrey Baratheon":"No","Myrcella Baratheon":"Maybe","Tommen Baratheon":"Maybe"}},"Eddard Stark":{"location":"Winterfell","address":"Winterfell","tags":{"deceased" : " ", "Stark": " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Eddard Stark":"Maybe","Catelyn Stark":"Maybe","Jon Snow":"Maybe","Robb Stark":"Maybe","Sansa Stark":"Maybe","Arya Stark":"Maybe","Bran Stark":"Maybe","Rickon Stark":"Maybe"}},"Tyrion Lannister":{"location":"Free cities","address":"Free cities","tags":{"Lannister" : " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Tyrion Lannister":"Maybe"}}});
                 displayContent();
                 $('.tab.showInviteeList').click();
             });
@@ -105,11 +118,15 @@ require(["jquery"],
             var updateInviteeJSON = function(){
                 var inviteeJSON = getInviteeJSON();
                 var inviteeName = $(inviteeNameSelector).val();
-               
+
+                var tagsArray = ($(inviteeTagsSelector).val() || "").split(/\s/);
+                for(var i=0;i<tagsArray.length;i++){
+                    tagsJSON[tagsArray[i]]=" ";
+                }
                 var inviteeDetails = {
                     location:($(inviteeLocationSelector).val() || ""),
                     address:($(inviteeAddressSelector).val() || ""),
-                    tags:($(inviteeTagsSelector).val() || ""),
+                    tags:tagsJSON,
                     inviteMode:($(inviteModeSelector).val() || ""),
                     invitedFlag:($(invitedFlagSelector).val() || ""),
                     dependents:{}
@@ -177,7 +194,7 @@ require(["jquery"],
                 $(inviteeNameSelector).val(invitee);
                 $(inviteeLocationSelector).val(inviteeDetails.location);
                 $(inviteeAddressSelector).val(inviteeDetails.address);
-                $(inviteeTagsSelector).val(inviteeDetails.tags);
+                $(inviteeTagsSelector).val(Object.keys(inviteeDetails.tags).join(" "));
                 $(invitedFlagSelector).val(inviteeDetails.invitedFlag);
                 $(inviteModeSelector).val(inviteeDetails.inviteMode);
 
@@ -249,9 +266,14 @@ require(["jquery"],
                 }
 
                 var searchLocation = ($('input[name="search_inviteeLocation"]').val() || "").trim();
-                var searchTags = ($('input[name="search_inviteeTags"]').val() || "").trim();
+                
                 var searchInviteMode = ($('select[name="search_inviteModeFlag"]').val() || "").trim();
                 var searchInvitedFlag = ($('select[name="search_invitedFlag"]').val() || "").trim();
+                var searchTags = {};
+                $('[name="tagName"]:checked').each(function(){
+                    searchTags[$(this).val()]=" ";
+                });
+                var searchTagsFlag = Object.keys(searchTags).length>0;
 
                 for(var inviteeName in filteredJSON){
                     var inviteeDetails = inviteeJSON[inviteeName];
@@ -269,6 +291,14 @@ require(["jquery"],
                         && inviteeDetails.invitedFlag != searchInvitedFlag){
                         delete filteredJSON[inviteeName];
                         continue;
+                    }
+                    if(searchTagsFlag){
+                        for(var tagName in searchTags){
+                            if(!inviteeDetails.tags[tagName]){
+                                delete filteredJSON[inviteeName];
+                                continue;           
+                            }
+                        }
                     }
                 }
 
@@ -331,7 +361,7 @@ require(["jquery"],
                         $('<td>').html((dependent == invitee)?inviteeDetails.inviteMode:"").appendTo(tableRow);
                         $('<td>').html((dependent == invitee)?inviteeDetails.invitedFlag:"").appendTo(tableRow);
                         $('<td>').html(dependents[dependent] ).appendTo(tableRow);
-                        $('<td>').html((dependent == invitee)?(inviteeDetails.tags || "NA"):"").appendTo(tableRow);
+                        $('<td>').html((dependent == invitee)?(Object.keys(inviteeDetails.tags).join(",") || "NA"):"").appendTo(tableRow);
                         var actionColumn = $('<td>')
                         $('<span>',{class:deleteDependentClass + ' fa fa-trash-o',"title":"delete this dependent/invitee"}).html(" ").appendTo(actionColumn);
                         if(dependent==invitee){
@@ -356,6 +386,8 @@ require(["jquery"],
 
             displayContent();
 
+
+
             var showSearchScreen = function(){
                 var searchDiv = $('.searchDiv')
                 searchDiv.html(getTemplate('inputContentTemplate'));
@@ -372,6 +404,18 @@ require(["jquery"],
                     $('<option>',{value:'',selected:"selected"}).html("All").appendTo(inputElement);
                 });
                 searchDiv.find(addInviteeButtonSelector).removeClass(addInviteeClass).addClass(searchInviteeClass).html("Search").removeAttr('disabled');
+
+                var outputTemplate = getTemplate("displayContent");
+                outputTemplate.find('label').removeClass('bolder').html("Tags: ");
+                var tagJSON = getTags();
+                var labelElement = outputTemplate.find('label');
+                for(var tagName in tagJSON){
+                    var tagSpan = $('<span>',{class:"leftMargin5"});
+                    tagSpan.html(tagName + "("+tagJSON[tagName]+")");
+                    $('<input>',{type:"checkbox",name:"tagName",value:tagName}).html("").appendTo(tagSpan);
+                    tagSpan.insertAfter(labelElement);
+                }
+                outputTemplate.insertBefore(searchDiv.find('.inputFormRow').last());
             };
             showSearchScreen();
         });
