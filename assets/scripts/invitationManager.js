@@ -107,11 +107,11 @@ require(["jquery"],
                 var inviteeName = $(inviteeNameSelector).val();
                
                 var inviteeDetails = {
-                    location:$(inviteeLocationSelector).val(),
-                    address:$(inviteeAddressSelector).val(),
-                    tags:$(inviteeTagsSelector).val(),
-                    inviteMode:$(inviteModeSelector).val(),
-                    invitedFlag:$(invitedFlagSelector).val(),
+                    location:($(inviteeLocationSelector).val() || ""),
+                    address:($(inviteeAddressSelector).val() || ""),
+                    tags:($(inviteeTagsSelector).val() || ""),
+                    inviteMode:($(inviteModeSelector).val() || ""),
+                    invitedFlag:($(invitedFlagSelector).val() || ""),
                     dependents:{}
                 };
                 $(dependentsDivSelector).find(dependentDetailsSelector).each(function(index,element){
@@ -256,19 +256,16 @@ require(["jquery"],
                 for(var inviteeName in filteredJSON){
                     var inviteeDetails = inviteeJSON[inviteeName];
                     if(searchLocation.length > 0 
-                        && inviteeDetails.location.length > 0 
                         && inviteeDetails.location.toUpperCase().indexOf(searchLocation.toUpperCase())==-1){
                         delete filteredJSON[inviteeName];
                         continue;
                     }
                     if(searchInviteMode.length > 0 
-                        && inviteeDetails.inviteMode.length > 0 
                         && inviteeDetails.inviteMode != searchInviteMode){
                         delete filteredJSON[inviteeName];
                         continue;
                     }
                     if(searchInvitedFlag.length > 0 
-                        && inviteeDetails.invitedFlag.length > 0 
                         && inviteeDetails.invitedFlag != searchInvitedFlag){
                         delete filteredJSON[inviteeName];
                         continue;
