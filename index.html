@@ -34,30 +34,30 @@
       </div><!--inputFormRow-->
     </script><!--displayContent-->
     <script type="text/html" class="inputContentTemplate">
-      <div class="inputFormRow">
+      <div class="inputFormRow inputOnly">
         <div class="inputFormColumn">
-          <label class="leftMargin10 hint inline">Use this form to add new invitees or edit details of existing ones</label>
+          <label class="leftMargin10 hint inline inputOnly">Use this form to add new invitees or edit details of existing ones</label>
         </div><!--inputFormColumn-->
       </div><!--inputFormRow-->
       <div class="inputFormRow">
         <div class="inputFormColumn">
           <label class="inline">Invitee:</label>
           <input type="text" name="inviteeName"/>
-          <label class="leftMargin10 hint inline">Person to whom the invite is to be given (is automatically added as a dependent)</label>
+          <label class="leftMargin10 hint inline inputOnly">Person to whom the invite is to be given (is automatically added as a dependent)</label>
         </div><!--inputFormColumn-->
       </div><!--inputFormRow-->
       <div class="inputFormRow">
         <div class="inputFormColumn">
           <label class="inline">Location:</label>
           <input type="text" name="inviteeLocation"/>
-          <label class="leftMargin10 hint inline">City (will be used by the system to search - coming soon)</label>
+          <label class="leftMargin10 hint inline inputOnly">City (will be used by the system to search - coming soon)</label>
         </div><!--inputFormColumn-->
       </div><!--inputFormRow-->
       <div class="inputFormRow">
         <div class="inputFormColumn">
           <label class="inline">Tags:</label>
           <input type="text" name="inviteeTags"/>
-          <label class="leftMargin10 hint inline">Tags to group invitees by (ex: family, friends, office, etc.. Will be used by the system to search - coming soon)</label>
+          <label class="leftMargin10 hint inline inputOnly">Tags to group invitees by (ex: family, friends, office, etc.. Will be used by the system to search - coming soon)</label>
         </div><!--inputFormColumn-->
       </div><!--inputFormRow-->
       <div class="inputFormRow">
@@ -67,7 +67,7 @@
             <option value="Visit">Visit</option>
             <option value="Call">Call</option>
           </select>
-          <label class="leftMargin10 hint inline">Will you be visiting this person or calling them? (Is displayed in summary - other uses coming soon)</label>
+          <label class="leftMargin10 hint inline inputOnly">Will you be visiting this person or calling them? (Is displayed in summary - other uses coming soon)</label>
         </div><!--inputFormColumn-->
       </div><!--inputFormRow-->
       <div class="inputFormRow">
@@ -77,16 +77,16 @@
             <option value="No">No</option>
             <option value="Yes">Yes</option>
           </select>
-          <label class="leftMargin10 hint inline">Once you've invited this person, mark this as "Yes".</label>
+          <label class="leftMargin10 hint inline inputOnly">Once you've invited this person, mark this as "Yes".</label>
         </div><!--inputFormColumn-->
       </div><!--inputFormRow-->
-      <div class="inputFormRow">
+      <div class="inputFormRow inputOnly">
         <div class="inputFormColumn">
-          <label class="inline">Address:</label><label class="leftMargin10 hint inline">Postal address (optional)</label><br/>
+          <label class="inline">Address:</label><label class="leftMargin10 hint inline inputOnly">Postal address (optional)</label><br/>
           <textarea name="inviteeAddress" cols='50' rows='5'></textarea>
         </div><!--inputFormColumn-->
       </div><!--inputFormRow-->
-      <div class="inputFormRow addDependentDiv hidden">
+      <div class="inputFormRow addDependentDiv hidden inputOnly">
         <div class="inputFormColumn">
           <label class="inline">Dependents</label>
           <input class="numberInput" type="text" value="1" name="numberOfDependents" title/>
@@ -160,7 +160,8 @@
         <div class="inputFormColumn">
           <label class="leftMargin10 hint inline">This tab displays a raw list of all attendees</label>
         </div><!--inputFormColumn-->
-      </div><!--inputFormRow-->     
+      </div><!--inputFormRow-->
+      <div class="searchDiv"></div><!--searchDiv-->
       <table>
         <thead>
           <tr>

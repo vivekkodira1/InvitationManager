@@ -11,12 +11,14 @@ require(["jquery"],
     function($){
         var addInviteeClass = 'addInvitee';
         var editInviteeClass = 'editInvitee';
+        var searchInviteeClass = 'searchInvitee';
         var deleteDependentClass = 'deleteDependent';
         var showEditFormClass = 'showEditForm';
         var deleteDependentSelector = '.'+deleteDependentClass;
         var showEditFormSelector = '.'+showEditFormClass;
         var addInviteeButtonSelector = '.'+addInviteeClass;
         var editInviteeButtonSelector = '.'+editInviteeClass;
+        var searchInviteeButtonSelector = '.'+searchInviteeClass;
         var actionButtonSelector = 'button[name="inviteeAction"]';
         var attendingInputsTemplateSelector = 'attendingInputs';
         var inviteeNameSelector = 'input[name="inviteeName"]';
@@ -223,6 +225,60 @@ require(["jquery"],
                 displayContent();
             });
 
+            $(document).on('click',searchInviteeButtonSelector,function(e){
+                var searchInviteeName = ($('input[name="search_inviteeName"]').val() || "").trim();
+                
+                var inviteeJSON = getInviteeJSON();
+                var filteredJSON = {};
+                // If name is not specified, consider all the invitees
+                if(searchInviteeName.length==0){
+                    filteredJSON = JSON.parse(JSON.stringify(inviteeJSON));
+                }else{
+                    for(var inviteeName in inviteeJSON){
+                        var inviteeDetails = inviteeJSON[inviteeName];
+                        if(inviteeName.toUpperCase().indexOf(searchInviteeName.toUpperCase())!=-1){
+                            filteredJSON[inviteeName]=inviteeDetails;
+                            continue;
+                        }
+                        for(var dependentName in inviteeDetails.dependents){
+                            if(dependentName.toUpperCase().indexOf(searchInviteeName.toUpperCase())!=-1){
+                                filteredJSON[inviteeName]=inviteeDetails;
+                            }   
+                        }
+                    }
+                }
+
+                var searchLocation = ($('input[name="search_inviteeLocation"]').val() || "").trim();
+                var searchTags = ($('input[name="search_inviteeTags"]').val() || "").trim();
+                var searchInviteMode = ($('select[name="search_inviteModeFlag"]').val() || "").trim();
+                var searchInvitedFlag = ($('select[name="search_invitedFlag"]').val() || "").trim();
+
+                for(var inviteeName in filteredJSON){
+                    var inviteeDetails = inviteeJSON[inviteeName];
+                    if(searchLocation.length > 0 
+                        && inviteeDetails.location.length > 0 
+                        && inviteeDetails.location.toUpperCase().indexOf(searchLocation.toUpperCase())==-1){
+                        delete filteredJSON[inviteeName];
+                        continue;
+                    }
+                    if(searchInviteMode.length > 0 
+                        && inviteeDetails.inviteMode.length > 0 
+                        && inviteeDetails.inviteMode != searchInviteMode){
+                        delete filteredJSON[inviteeName];
+                        continue;
+                    }
+                    if(searchInvitedFlag.length > 0 
+                        && inviteeDetails.invitedFlag.length > 0 
+                        && inviteeDetails.invitedFlag != searchInvitedFlag){
+                        delete filteredJSON[inviteeName];
+                        continue;
+                    }
+                }
+
+
+                showInvitees(filteredJSON);
+            });
+
             var summarizeStatus= window.summarizeStatus = function(){
                 var inviteeJSON = getInviteeJSON();
                 var summaryJSON = {};
@@ -262,10 +318,10 @@ require(["jquery"],
                 // console.log("summaryJSON",summaryJSON);
             };
 
-            var showInvitees = window.showInvitees = function(){
+            var showInvitees = window.showInvitees = function(inviteeJSON){
                 var tableDiv = $('.listOfInvitees').find('tbody');
                 tableDiv.html("");
-                var inviteeJSON = getInviteeJSON();
+                
                 for(var invitee in inviteeJSON){
                     var inviteeDetails = inviteeJSON[invitee];
                     var dependents = inviteeDetails.dependents;
@@ -296,12 +352,31 @@ require(["jquery"],
 
             var displayContent = function(){
                 resetInputs();
-                showInvitees();
+                showInvitees(getInviteeJSON());
                 summarizeStatus();
                 showRawContent();
             };
 
             displayContent();
+
+            var showSearchScreen = function(){
+                var searchDiv = $('.searchDiv')
+                searchDiv.html(getTemplate('inputContentTemplate'));
+                searchDiv.find('.inputOnly').remove();
+                searchDiv.find('input,select').each(function(index,element){
+                    var inputElement = $(element);
+                    var searchKey = inputElement.attr('name');
+                    inputElement.data('key',searchKey);
+                    inputElement.attr('name','search_'+searchKey);
+                });
+
+                searchDiv.find('select').each(function(index,element){
+                    var inputElement = $(element);
+                    $('<option>',{value:'',selected:"selected"}).html("All").appendTo(inputElement);
+                });
+                searchDiv.find(addInviteeButtonSelector).removeClass(addInviteeClass).addClass(searchInviteeClass).html("Search").removeAttr('disabled');
+            };
+            showSearchScreen();
         });
     },
     function (err) {
