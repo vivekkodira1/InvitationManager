@@ -7,6 +7,12 @@
 .leftMargin10{
 	margin-left:10px;
 }
+.topMargin20{
+	margin-top:20px;
+}
+.bottomMargin20{
+	margin-bottom:20px;
+}
 .inputFormRow{
 	display:table-row;
 }

@@ -242,7 +242,7 @@ require(["jquery"],
                 displayContent();
             });
 
-            $(document).on('click',searchInviteeButtonSelector,function(e){
+            var searchInvitees = function(){
                 var searchInviteeName = ($('input[name="search_inviteeName"]').val() || "").trim();
                 
                 var inviteeJSON = getInviteeJSON();
@@ -270,7 +270,7 @@ require(["jquery"],
                 var searchInviteMode = ($('select[name="search_inviteModeFlag"]').val() || "").trim();
                 var searchInvitedFlag = ($('select[name="search_invitedFlag"]').val() || "").trim();
                 var searchTags = {};
-                $('[name="tagName"]:checked').each(function(){
+                $('input[name="tagName"]:checked').each(function(){
                     searchTags[$(this).val()]=" ";
                 });
                 var searchTagsFlag = Object.keys(searchTags).length>0;
@@ -304,7 +304,13 @@ require(["jquery"],
 
 
                 showInvitees(filteredJSON);
-            });
+            };
+
+            $(document).on('keyup','input[name="search_inviteeName"]',searchInvitees);
+            $(document).on('keyup','input[name="search_inviteeLocation"]',searchInvitees);
+            $(document).on('change','select[name="search_inviteModeFlag"]',searchInvitees);
+            $(document).on('change','select[name="search_invitedFlag"]',searchInvitees);
+            $(document).on('change','input[name="tagName"]',searchInvitees);
 
             var summarizeStatus= window.summarizeStatus = function(){
                 var inviteeJSON = getInviteeJSON();
@@ -390,7 +396,7 @@ require(["jquery"],
 
             var showSearchScreen = function(){
                 var searchDiv = $('.searchDiv')
-                searchDiv.html(getTemplate('inputContentTemplate'));
+                getTemplate('inputContentTemplate').appendTo(searchDiv);
                 searchDiv.find('.inputOnly').remove();
                 searchDiv.find('input,select').each(function(index,element){
                     var inputElement = $(element);
@@ -403,7 +409,6 @@ require(["jquery"],
                     var inputElement = $(element);
                     $('<option>',{value:'',selected:"selected"}).html("All").appendTo(inputElement);
                 });
-                searchDiv.find(addInviteeButtonSelector).removeClass(addInviteeClass).addClass(searchInviteeClass).html("Search").removeAttr('disabled');
 
                 var outputTemplate = getTemplate("displayContent");
                 outputTemplate.find('label').removeClass('bolder').html("Tags: ");
@@ -415,7 +420,7 @@ require(["jquery"],
                     $('<input>',{type:"checkbox",name:"tagName",value:tagName}).html("").appendTo(tagSpan);
                     tagSpan.insertAfter(labelElement);
                 }
-                outputTemplate.insertBefore(searchDiv.find('.inputFormRow').last());
+                outputTemplate.insertAfter(searchDiv.find('.inputFormRow').last());
             };
             showSearchScreen();
         });

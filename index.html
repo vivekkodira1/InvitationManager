@@ -8,95 +8,95 @@
   <body>
     <script type="text/html" class="attendingInputs">
       <div class="inputFormRow dependentDetails">
-        <div class="inputFormColumn">
+        <div class="inputFormColumn group">
           <label class="inline">Name</label>
           <input type="text" name="dependentName"/>
-        </div><!--inputFormColumn-->
-        <div class="inputFormColumn">
+        </div><!--inputFormColumn group-->
+        <div class="inputFormColumn group">
           <label class="inline">Attending</label>
           <select name="attendingFlag">
             <option value="Maybe" selected="selected">Maybe</option>
             <option value="Yes">Yes</option>
             <option value="No">No</option>
           </select>
-        </div><!--inputFormColumn-->
-        <div class="inputFormColumn">
+        </div><!--inputFormColumn group-->
+        <div class="inputFormColumn group">
           <span class="clickable bolder removeDependent" title="Remove this dependent">-</span>
-        </div><!--inputFormColumn-->
+        </div><!--inputFormColumn group-->
       </div><!--inputFormRow-->
     </script>
         
     <script type="text/html" class="displayContent">
       <div class="inputFormRow">
-        <div class="inputFormColumn">
+        <div class="inputFormColumn group">
           <label class="inline bolder"></label>: <span></span>
-        </div><!--inputFormColumn-->
+        </div><!--inputFormColumn group-->
       </div><!--inputFormRow-->
     </script><!--displayContent-->
     <script type="text/html" class="inputContentTemplate">
       <div class="inputFormRow inputOnly">
-        <div class="inputFormColumn">
+        <div class="inputFormColumn group">
           <label class="leftMargin10 hint inline inputOnly">Use this form to add new invitees or edit details of existing ones</label>
-        </div><!--inputFormColumn-->
+        </div><!--inputFormColumn group-->
       </div><!--inputFormRow-->
       <div class="inputFormRow">
-        <div class="inputFormColumn">
+        <div class="inputFormColumn group">
           <label class="inline">Invitee:</label>
           <input type="text" name="inviteeName"/>
           <label class="leftMargin10 hint inline inputOnly">Person to whom the invite is to be given (is automatically added as a dependent)</label>
-        </div><!--inputFormColumn-->
+        </div><!--inputFormColumn group-->
       </div><!--inputFormRow-->
       <div class="inputFormRow">
-        <div class="inputFormColumn">
+        <div class="inputFormColumn group">
           <label class="inline">Location:</label>
           <input type="text" name="inviteeLocation"/>
-          <label class="leftMargin10 hint inline inputOnly">City (will be used by the system to search - coming soon)</label>
-        </div><!--inputFormColumn-->
+          <label class="leftMargin10 hint inline inputOnly">City (will be used by the system to search)</label>
+        </div><!--inputFormColumn group-->
       </div><!--inputFormRow-->
       <div class="inputFormRow inputOnly">
-        <div class="inputFormColumn">
+        <div class="inputFormColumn group">
           <label class="inline">Tags:</label>
           <input type="text" name="inviteeTags"/>
-          <label class="leftMargin10 hint inline inputOnly">Tags to group invitees by (ex: family, friends, office, etc.. Will be used by the system to search - coming soon)</label>
-        </div><!--inputFormColumn-->
+          <label class="leftMargin10 hint inline inputOnly">Tags to group invitees by (ex: family, friends, office, etc.. Will be used by the system to search)</label>
+        </div><!--inputFormColumn group-->
       </div><!--inputFormRow-->
       <div class="inputFormRow">
-        <div class="inputFormColumn">
+        <div class="inputFormColumn group">
           <label class="inline">Visit/Call:</label>
           <select name="inviteModeFlag">
             <option value="Visit">Visit</option>
             <option value="Call">Call</option>
           </select>
           <label class="leftMargin10 hint inline inputOnly">Will you be visiting this person or calling them? (Is displayed in summary - other uses coming soon)</label>
-        </div><!--inputFormColumn-->
+        </div><!--inputFormColumn group-->
       </div><!--inputFormRow-->
       <div class="inputFormRow">
-        <div class="inputFormColumn">
+        <div class="inputFormColumn group">
           <label class="inline">Invited:</label>
           <select name="invitedFlag">
             <option value="No">No</option>
             <option value="Yes">Yes</option>
           </select>
           <label class="leftMargin10 hint inline inputOnly">Once you've invited this person, mark this as "Yes".</label>
-        </div><!--inputFormColumn-->
+        </div><!--inputFormColumn group-->
       </div><!--inputFormRow-->
       <div class="inputFormRow inputOnly">
-        <div class="inputFormColumn">
+        <div class="inputFormColumn group">
           <label class="inline">Address:</label><label class="leftMargin10 hint inline inputOnly">Postal address (optional)</label><br/>
           <textarea name="inviteeAddress" cols='50' rows='5'></textarea>
-        </div><!--inputFormColumn-->
+        </div><!--inputFormColumn group-->
       </div><!--inputFormRow-->
       <div class="inputFormRow addDependentDiv hidden inputOnly">
-        <div class="inputFormColumn">
+        <div class="inputFormColumn group">
           <label class="inline">Dependents</label>
           <input class="numberInput" type="number" value="1" name="numberOfDependents" title/>
           <span class="fa fa-plus leftMargin5 bolder addDependents clickable" title="Click to add dependents"></span>
           <label class="leftMargin10 hint inline">Add dependents who will be invited/may attend</label>
           <div class="dependents">
           </div>
-        </div><!--inputFormColumn-->
+        </div><!--inputFormColumn group-->
       </div><!--inputFormRow-->
-      <div class="inputFormRow">
+      <div class="inputFormRow inputOnly">
         <button class="addInvitee" name ="inviteeAction" title="Add this invitee to the system" disabled="disabled">Add</button>
       </div>
     </script><!--inputContentTemplate-->
@@ -119,7 +119,7 @@
       <h3>Using this application</h3>
       <ul>
         <li>The tab: 'Add/Edit Invitees' allows you to add invitees, their details (ex: addresses) and dependents</li>
-        <li>The "Invitees List" displays the complete list of invitees</li>
+        <li>The "Invitees List" displays the complete list of invitees and allows you to search the list using various criteria</li>
         <li>The "Summary" tab displays summary information such as the number of invitees, the number of attendees, etc. </li>
         <li>The tab "Raw content" can be used to copy content generated by the system to a file or to import content</li>
         <li>Click "Save As" and choose "Webpage, Complete" to save this application to your local computer to use offline</li>
@@ -149,19 +149,30 @@
     </div><!--inputForm-->
     <div class="inviteeSummary hidden tabContent">
       <div class="inputFormRow">
-        <div class="inputFormColumn">
+        <div class="inputFormColumn group">
           <label class="leftMargin10 hint inline">This tab displays a summary of the invites listing the totals and/or pending invites/attendees</label>
-        </div><!--inputFormColumn-->
+        </div><!--inputFormColumn group-->
       </div><!--inputFormRow-->
       <div class="inviteeSummaryDiv"></div>
     </div><!--inviteeSummary-->
     <div class="listOfInvitees tabContent">
       <div class="inputFormRow">
-        <div class="inputFormColumn">
+        <div class="inputFormColumn group">
           <label class="leftMargin10 hint inline">This tab displays a raw list of all attendees</label>
-        </div><!--inputFormColumn-->
+        </div><!--inputFormColumn group-->
       </div><!--inputFormRow-->
-      <div class="searchDiv"></div><!--searchDiv-->
+      <div class="searchDiv topMargin20 bottomMargin20">
+        <div class="inputFormRow">
+          <div class="inputFormColumn group">
+            <label class="inline bolder">Search Fields:</label>
+          </div><!--inputFormColumn group-->
+        </div><!--inputFormRow-->
+      </div><!--searchDiv-->
+      <div class="inputFormRow topMargin20">
+        <div class="inputFormColumn group">
+          <label class="inline bolder">List/Search Results:</label>
+        </div><!--inputFormColumn group-->
+      </div><!--inputFormRow-->
       <table>
         <thead>
           <tr>
@@ -174,9 +185,9 @@
     </div>
     <div class="rawOutput hidden tabContent">
       <div class="inputFormRow">
-        <div class="inputFormColumn">
+        <div class="inputFormColumn group">
           <label class="leftMargin10 hint inline">This tab displays raw content generated by the system. Save this for later use Or click import to generate the list from saved content</label>
-        </div><!--inputFormColumn-->
+        </div><!--inputFormColumn group-->
       </div><!--inputFormRow-->
       <button class="importFromRawContent">Import</button>
       <textarea class="rawOutputContainer" cols="190" rows="20"> </textarea>
