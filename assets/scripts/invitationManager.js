@@ -102,13 +102,12 @@ require(["jquery"],
             $(document).on('click','.showDemoContent',function(e){
                 storeInvitees({"Robert Baratheon":{"location":"Kings Landing","address":"Palace Kings Landing.","tags":{"King" : " ", "Baratheon": " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Robert Baratheon":"No","Cersei Lannister":"Maybe","Gendry":"Maybe"}},"Stannis Baratheon":{"location":"Dragonstone","address":"Fort Dragonstone","tags":{"Baratheon" : " ", "King": " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Stannis Baratheon":"Maybe","Melisandre":"Maybe","Selyse Florent":"Maybe","Shireen Baratheon":"Maybe"}},"Renly Baratheon":{"location":"","address":"Graveyard","tags":{"King" : " ", "deceased" :" ", "Baratheon" : " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Renly Baratheon":"No"}},"Tywin Lannister":{"location":"Casterly Rock","address":"Palace Casterly Rock","tags":{"deceased" : " ", "Lannister": " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Tywin Lannister":"No","Joanna Lannister":"No"}},"Daenerys Targaryen":{"location":"Free cities","address":"Free Cities","tags":{"Queen" : " ", "Targaryen": " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Daenerys Targaryen":"Maybe","Drogon":"Maybe","Viserion":"Maybe","Rhaegal":"Maybe"}},"Jamie Lannister":{"location":"Kings Landing","address":"Palace Kings Landing","tags":{"Lannister" : " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Jamie Lannister":"Maybe","Joffrey Baratheon":"No","Myrcella Baratheon":"Maybe","Tommen Baratheon":"Maybe"}},"Eddard Stark":{"location":"Winterfell","address":"Winterfell","tags":{"deceased" : " ", "Stark": " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Eddard Stark":"Maybe","Catelyn Stark":"Maybe","Jon Snow":"Maybe","Robb Stark":"Maybe","Sansa Stark":"Maybe","Arya Stark":"Maybe","Bran Stark":"Maybe","Rickon Stark":"Maybe"}},"Tyrion Lannister":{"location":"Free cities","address":"Free cities","tags":{"Lannister" : " "},"inviteMode":"Visit","invitedFlag":"No","dependents":{"Tyrion Lannister":"Maybe"}}});
                 displayContent();
-                $('.tab.showInviteeList').click();
             });
 
             $(document).on('click','.removeAll',function(e){
                 storeInvitees({});
                 displayContent();
-                $('.tab.showInviteeList').click();
+               
             });
 
             $(document).on('click',removeDependentSelector,function(e){
@@ -118,7 +117,7 @@ require(["jquery"],
             var updateInviteeJSON = function(){
                 var inviteeJSON = getInviteeJSON();
                 var inviteeName = $(inviteeNameSelector).val();
-
+                var tagsJSON ={};
                 var tagsArray = ($(inviteeTagsSelector).val() || "").split(/\s/);
                 for(var i=0;i<tagsArray.length;i++){
                     tagsJSON[tagsArray[i]]=" ";
@@ -167,7 +166,7 @@ require(["jquery"],
                 $(rawContentSelector).val(JSON.stringify(inviteeJSON));
             };
 
-            $(document).on('click','.importFromRawContent',function(e){
+            var importFromRawContent = function(){
               var rawContent = $(rawContentSelector).val() || "";
               if(rawContent.trim()===""){
                 alert("Please enter some content");
@@ -184,7 +183,9 @@ require(["jquery"],
               }catch(e){
                 alert("Could not understand/parse the content");
               } 
-            });
+            };
+
+            $(document).on('click','.importFromRawContent',importFromRawContent);
 
             $(document).on('click',showEditFormSelector,function(e){
                 var inviteeJSON = getInviteeJSON();
@@ -387,6 +388,7 @@ require(["jquery"],
                 showInvitees(getInviteeJSON());
                 summarizeStatus();
                 showRawContent(getInviteeJSON());
+                $('.tab.showInviteeList').click();
             };
 
             displayContent();
@@ -517,6 +519,7 @@ require(["jquery"],
                     }
                 }
                 showRawContent(inviteeJSON);
+                setTimeout(importFromRawContent,20);
                 
             });
         });
