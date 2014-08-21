@@ -57,7 +57,7 @@
         <div class="inputFormColumn group">
           <label class="inline">Tags:</label>
           <input type="text" name="inviteeTags"/>
-          <label class="leftMargin10 hint inline inputOnly">Tags to group invitees by (ex: family, friends, office, etc.. Will be used by the system to search)</label>
+          <label class="leftMargin10 hint inline inputOnly">Tags to group invitees by (ex: family, friends, office, etc.. Will be used by the system to search. Each word is considered a tag)</label>
         </div><!--inputFormColumn group-->
       </div><!--inputFormRow-->
       <div class="inputFormRow">
@@ -190,7 +190,10 @@
         </div><!--inputFormColumn group-->
       </div><!--inputFormRow-->
       <button class="importFromRawContent">Import</button>
+      <button class="exportToCSV">Export to CSV</button>
+      <button class="importFromCSV">Import from CSV</button>
       <textarea class="rawOutputContainer" cols="190" rows="20"> </textarea>
+      <textarea class="csvContainer" cols="190" rows="20"> </textarea>
     </div>
   </body>
   <script data-main="assets/scripts/invitationManager.js" src="assets/scripts/thirdPartyScripts/require.js"></script>

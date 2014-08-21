@@ -163,8 +163,8 @@ require(["jquery"],
                 $('.listOfInvitees').find("tr."+getCSSSafeName(invitee)).remove();
             };
 
-            var showRawContent = function(){
-                $(rawContentSelector).val(localStorage.invitees);
+            var showRawContent = function(inviteeJSON){
+                $(rawContentSelector).val(JSON.stringify(inviteeJSON));
             };
 
             $(document).on('click','.importFromRawContent',function(e){
@@ -302,7 +302,6 @@ require(["jquery"],
                     }
                 }
 
-
                 showInvitees(filteredJSON);
             };
 
@@ -387,12 +386,10 @@ require(["jquery"],
                 resetInputs();
                 showInvitees(getInviteeJSON());
                 summarizeStatus();
-                showRawContent();
+                showRawContent(getInviteeJSON());
             };
 
             displayContent();
-
-
 
             var showSearchScreen = function(){
                 var searchDiv = $('.searchDiv')
@@ -423,9 +420,109 @@ require(["jquery"],
                 outputTemplate.insertAfter(searchDiv.find('.inputFormRow').last());
             };
             showSearchScreen();
+
+            var inviteeFields = [
+                {inviteeName:{content:"text"}},
+                {dependentName:{content:"text"}},
+                {location:{content:"text"}},
+                {address:{content:"text"}},
+                {tags:{content:"text"}},
+                {inviteMode:"Visit,Call"},
+                {invitedFlag:"Yes,No"},
+                {attendingFlag:"Yes,No"},
+            ];
+
+            var getInviteeFieldsAsArray = function(){
+                var inviteeFieldArray = [];
+                for(var i=0;i<inviteeFields.length;i++){
+                    inviteeFieldArray = inviteeFieldArray.concat(Object.keys(inviteeFields[i])[0]);
+                }
+                return inviteeFieldArray;
+            };
+
+            var getFieldRepresentation = function(input){
+                if(typeof input =="string"){
+                    return input;
+                }
+                if(Array.isArray(input)){
+                    return input.join(" ");
+                }
+                if(typeof input == 'object'){
+                    return Object.keys(input).join(" ");
+                }
+            };
+
+            $(document).on('click','.exportToCSV',function(){
+                var inviteeJSON = getInviteeJSON();
+                var inviteeFieldsArray = getInviteeFieldsAsArray();
+                var csvContent = inviteeFieldsArray.join(',');
+                for(var inviteeName in inviteeJSON){
+                    var inviteeDetails = inviteeJSON[inviteeName];
+                    for(var dependentName in inviteeDetails.dependents){
+                        var line =inviteeName+","+dependentName;
+                        for(var i=0;i<inviteeFieldsArray.length;i++){
+                            var fieldName = inviteeFieldsArray[i];
+                            if(fieldName == 'inviteeName' || fieldName == 'dependentName'){
+                                continue;
+                            }
+                            var fieldToPass = (typeof inviteeDetails[fieldName] == "undefined")?inviteeDetails.dependents[dependentName]:inviteeDetails[fieldName];
+                            var fieldRepresentation = getFieldRepresentation(fieldToPass);
+                            line = line +"," + fieldRepresentation;
+                        }
+                        csvContent = csvContent +"\n"+ line;
+                    }
+                }
+                $('.csvContainer').html(csvContent);
+            });
+
+            $(document).on('click','.importFromCSV',function(){
+                var invitees = [];
+                var csvContent = $('.csvContainer').html() || "";
+                var inviteeFieldsArray = getInviteeFieldsAsArray();
+                var lines = csvContent.split('\n');
+                for(var i=1;i<lines.length;i++){
+                    var line = lines[i];
+                    var lineFields = line.split(',');
+                    if(lineFields.length!=inviteeFieldsArray.length){
+                        alert('Did not find the necessary number of fields in line '+ i);
+                        return;
+                    }
+                    var inviteeDetails = {};
+                    for(var j=0;j<inviteeFieldsArray.length;j++){
+                        inviteeDetails[inviteeFieldsArray[j]]=lineFields[j];
+                    }
+                    invitees = invitees.concat(inviteeDetails);
+                }
+                var inviteeJSON = {};
+                for(i=0;i<invitees.length;i++){
+                    var lineInviteeDetails = invitees[i];
+                    if(!inviteeJSON[lineInviteeDetails.inviteeName]){
+                        var tagsArray = (lineInviteeDetails.tags).split(/\s/);
+                        var tagsJSON  ={};
+                        for(var i=0;i<tagsArray.length;i++){
+                            tagsJSON[tagsArray[i]]=" ";
+                        }
+                        var inviteeDetails = {
+                            invitedFlag:lineInviteeDetails.invitedFlag,
+                            inviteMode:lineInviteeDetails.inviteMode,
+                            location:lineInviteeDetails.location,
+                            tags:tagsJSON,
+                            address:lineInviteeDetails.address,
+                            dependents:{}
+                        };
+                        inviteeDetails.dependents[lineInviteeDetails.inviteeName] = lineInviteeDetails.attendingFlag;
+                        inviteeJSON[lineInviteeDetails.inviteeName] = inviteeDetails;
+                    }else{
+                        inviteeJSON[lineInviteeDetails.inviteeName].dependents[lineInviteeDetails.dependentName]=lineInviteeDetails.attendingFlag;
+                    }
+                }
+                showRawContent(inviteeJSON);
+                
+            });
         });
     },
     function (err) {
+        console.error(err.message,err.stack);
         alert(err);
     }
 );
