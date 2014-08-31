@@ -190,16 +190,17 @@ require(["jquery"],
 
             $(document).on('click','.importFromRawContent',importFromRawContent);
 
-            var populateInputForm = function(invitee,inviteeDetails){
+            var populateInputForm = function(invitee,inviteeDetails,target){
+                target = target || $(".inputForm");
                 resetInputs();
-                $(inviteeNameSelector).val(invitee).attr('disabled','disabled');
-                $(inviteeLocationSelector).val(inviteeDetails.location);
-                $(inviteeAddressSelector).val(inviteeDetails.address);
-                $(inviteeTagsSelector).val(Object.keys(inviteeDetails.tags).join(" "));
-                $(invitedFlagSelector).val(inviteeDetails.invitedFlag);
-                $(inviteModeSelector).val(inviteeDetails.inviteMode);
+                target.find(inviteeNameSelector).val(invitee).attr('disabled','disabled');
+                target.find(inviteeLocationSelector).val(inviteeDetails.location);
+                target.find(inviteeAddressSelector).val(inviteeDetails.address);
+                target.find(inviteeTagsSelector).val(Object.keys(inviteeDetails.tags).join(" "));
+                target.find(invitedFlagSelector).val(inviteeDetails.invitedFlag);
+                target.find(inviteModeSelector).val(inviteeDetails.inviteMode);
 
-                var dependentsDiv = $(dependentsDivSelector);
+                var dependentsDiv = target.find(dependentsDivSelector);
                 dependentsDiv.html("");
                 for(var dependent in inviteeDetails.dependents){
                     var dependents= getTemplate(attendingInputsTemplateSelector);
@@ -211,7 +212,7 @@ require(["jquery"],
                 dependentsDiv.find(dependentNameSelector).first().attr('disabled','disabled');
                 dependentsDiv.find(dependentDetailsSelector).first().find(removeDependentSelector).remove();
                 if(dependentsDiv.html().trim()!==""){
-                    $(addDependentDivSelector).removeClass("hidden");
+                    target.find(addDependentDivSelector).removeClass("hidden");
                 }
             };
 
