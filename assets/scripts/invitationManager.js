@@ -46,23 +46,24 @@ require(["jquery"],
         $(document).ready(function() {
 
             $(document).on('blur',inviteeNameSelector,function(){
-                var inviteeName = ($(inviteeNameSelector).val() || "").trim();
+                var target = $(this).closest('.inputsDiv');
+                var inviteeName = (target.find(inviteeNameSelector).val() || "").trim();
                 if(inviteeName.length===0){
-                    $(addInviteeButtonSelector).attr('disabled','disabled');
-                    $(addDependentDivSelector).addClass('hidden');
+                    target.find(addInviteeButtonSelector).attr('disabled','disabled');
+                    target.find(addDependentDivSelector).addClass('hidden');
                     return;
                 }
-                $(addDependentDivSelector).removeClass('hidden');
-                $(addInviteeButtonSelector).removeAttr('disabled');
+                target.find(addDependentDivSelector).removeClass('hidden');
+                target.find(addInviteeButtonSelector).removeAttr('disabled');
                 
-                if($(dependentsDivSelector).html().trim()!==""){
-                    $(dependentsDivSelector).find(dependentNameSelector).first().val(inviteeName);
+                if(target.find(dependentsDivSelector).html().trim()!==""){
+                    target.find(dependentsDivSelector).find(dependentNameSelector).first().val(inviteeName);
                 }else{
                     var dependents= getTemplate(attendingInputsTemplateSelector);
-                    dependents.find(dependentNameSelector).val(inviteeName);
+                    dependents.find(dependentNameSelector).val(inviteeName).attr('disabled','disabled');
                     dependents.find(removeDependentSelector).remove();
                     dependents.find(attendingFlagSelector).val("yes");
-                    dependents.appendTo($(dependentsDivSelector));
+                    dependents.appendTo(target.find(dependentsDivSelector));
                 }
             });
 
@@ -92,7 +93,8 @@ require(["jquery"],
             };
             
             $(document).on('click',addDependentsSelector,function(e){
-                var numberOfDependents = $('input[name="numberOfDependents"]').val() || 0;
+                var target = $(this).closest('.inputsDiv');
+                var numberOfDependents = target.find('input[name="numberOfDependents"]').val() || 0;
                 numberOfDependents = (Number.isNaN(numberOfDependents))?1:numberOfDependents*1;
                 for(var i=0;i<numberOfDependents;i++){
                     getTemplate(attendingInputsTemplateSelector).appendTo(dependentsDivSelector);
@@ -114,23 +116,24 @@ require(["jquery"],
                 $(e.target).closest(dependentDetailsSelector).remove();
             });
 
-            var updateInviteeJSON = function(){
+            var updateInviteeJSON = function(inputFormDiv){
                 var inviteeJSON = getInviteeJSON();
-                var inviteeName = $(inviteeNameSelector).val();
+                var inputForm = inputFormDiv || '.inputForm';
+                var inviteeName = $(inputForm).find(inviteeNameSelector).val();
                 var tagsJSON ={};
-                var tagsArray = ($(inviteeTagsSelector).val() || "").split(/\s/);
+                var tagsArray = ($(inputForm).find(inviteeTagsSelector).val() || "").split(/\s/);
                 for(var i=0;i<tagsArray.length;i++){
                     tagsJSON[tagsArray[i]]=" ";
                 }
                 var inviteeDetails = {
-                    location:($(inviteeLocationSelector).val() || ""),
-                    address:($(inviteeAddressSelector).val() || ""),
+                    location:($(inputForm).find(inviteeLocationSelector).val() || ""),
+                    address:($(inputForm).find(inviteeAddressSelector).val() || ""),
                     tags:tagsJSON,
-                    inviteMode:($(inviteModeSelector).val() || ""),
-                    invitedFlag:($(invitedFlagSelector).val() || ""),
+                    inviteMode:($(inputForm).find(inviteModeSelector).val() || ""),
+                    invitedFlag:($(inputForm).find(invitedFlagSelector).val() || ""),
                     dependents:{}
                 };
-                $(dependentsDivSelector).find(dependentDetailsSelector).each(function(index,element){
+                $(inputForm).find(dependentsDivSelector).find(dependentDetailsSelector).each(function(index,element){
                     var dependentDetails = $(element);
                     var dependentName = (dependentDetails.find(dependentNameSelector).val() || "").trim();
                     if(dependentName!==""){
@@ -187,12 +190,9 @@ require(["jquery"],
 
             $(document).on('click','.importFromRawContent',importFromRawContent);
 
-            $(document).on('click',showEditFormSelector,function(e){
-                var inviteeJSON = getInviteeJSON();
-                var invitee = $(e.target).closest('tr').data(data_invitee);
-                var inviteeDetails = inviteeJSON[invitee];
-
-                $(inviteeNameSelector).val(invitee);
+            var populateInputForm = function(invitee,inviteeDetails){
+                resetInputs();
+                $(inviteeNameSelector).val(invitee).attr('disabled','disabled');
                 $(inviteeLocationSelector).val(inviteeDetails.location);
                 $(inviteeAddressSelector).val(inviteeDetails.address);
                 $(inviteeTagsSelector).val(Object.keys(inviteeDetails.tags).join(" "));
@@ -207,13 +207,21 @@ require(["jquery"],
                     dependents.find(attendingFlagSelector).val(inviteeDetails.dependents[dependent]);
                     dependents.appendTo(dependentsDiv);
                 }
+                dependentsDiv.find(removeDependentSelector).first().remove();
+                dependentsDiv.find(dependentNameSelector).first().attr('disabled','disabled');
+                dependentsDiv.find(dependentDetailsSelector).first().find(removeDependentSelector).remove();
                 if(dependentsDiv.html().trim()!==""){
                     $(addDependentDivSelector).removeClass("hidden");
                 }
+            };
+
+            $(document).on('click',showEditFormSelector,function(e){
+                var inviteeJSON = getInviteeJSON();
+                var invitee = $(e.target).closest('tr').data(data_invitee);
+                populateInputForm(invitee,inviteeJSON[invitee]);
                 setTimeout(function(){
                     $(actionButtonSelector).removeAttr('disabled').html("Update").removeClass(addInviteeClass).addClass(editInviteeClass);
                     removeInviteeRows(invitee);
-                    dependentsDiv.find(dependentDetailsSelector).first().find(removeDependentSelector).remove();
                     $('.tab.showAddEditInviteeScreen').click();
                 },10);
             });
@@ -243,8 +251,8 @@ require(["jquery"],
                 displayContent();
             });
 
-            var searchInvitees = function(){
-                var searchInviteeName = ($('input[name="search_inviteeName"]').val() || "").trim();
+            var filterInvitees = function(searchDiv){
+                var searchInviteeName = ($(searchDiv).find('input[name="search_inviteeName"]').val() || "").trim();
                 
                 var inviteeJSON = getInviteeJSON();
                 var filteredJSON = {};
@@ -266,12 +274,12 @@ require(["jquery"],
                     }
                 }
 
-                var searchLocation = ($('input[name="search_inviteeLocation"]').val() || "").trim();
+                var searchLocation = ($(searchDiv).find('input[name="search_inviteeLocation"]').val() || "").trim();
                 
-                var searchInviteMode = ($('select[name="search_inviteModeFlag"]').val() || "").trim();
-                var searchInvitedFlag = ($('select[name="search_invitedFlag"]').val() || "").trim();
+                var searchInviteMode = ($(searchDiv).find('select[name="search_inviteModeFlag"]').val() || "").trim();
+                var searchInvitedFlag = ($(searchDiv).find('select[name="search_invitedFlag"]').val() || "").trim();
                 var searchTags = {};
-                $('input[name="tagName"]:checked').each(function(){
+                $(searchDiv).find('input[name="tagName"]:checked').each(function(){
                     searchTags[$(this).val()]=" ";
                 });
                 var searchTagsFlag = Object.keys(searchTags).length>0;
@@ -302,15 +310,68 @@ require(["jquery"],
                         }
                     }
                 }
+                return filteredJSON;
+            };
 
+            var searchInvitees = function(){
+                var filteredJSON = filterInvitees('.searchDiv');
                 showInvitees(filteredJSON);
             };
 
-            $(document).on('keyup','input[name="search_inviteeName"]',searchInvitees);
-            $(document).on('keyup','input[name="search_inviteeLocation"]',searchInvitees);
-            $(document).on('change','select[name="search_inviteModeFlag"]',searchInvitees);
-            $(document).on('change','select[name="search_invitedFlag"]',searchInvitees);
-            $(document).on('change','input[name="tagName"]',searchInvitees);
+            $('.searchDiv').on('keyup','input[name="search_inviteeName"]',searchInvitees);
+            $('.searchDiv').on('keyup','input[name="search_inviteeLocation"]',searchInvitees);
+            $('.searchDiv').on('change','select[name="search_inviteModeFlag"]',searchInvitees);
+            $('.searchDiv').on('change','select[name="search_invitedFlag"]',searchInvitees);
+            $('.searchDiv').on('change','input[name="tagName"]',searchInvitees);
+
+            var showPerson = function(filteredJSON,index){
+                var dialog = $('.dialog');
+                dialog.find('button').remove();
+                var dialogContent = $('.dialogContent').html("");
+                var personName = Object.keys(filteredJSON)[index];
+                populateInputForm(personName,filteredJSON[personName]);
+                setTimeout(function(){
+                    var inputForm = $('.inputForm').clone().removeClass('hidden');
+                    inputForm.find('.hint').remove();
+                    inputForm.find('button').remove();
+                    inputForm.appendTo(dialogContent);
+                    if(Object.keys(filteredJSON)[index+1]){
+                        $('<button>',{class:"showNext floatRight"}).html("Next").on('click',function(){
+                            updateInviteeJSON('.dialog');
+                            searchInvitees();
+                            inputForm.fadeOut('slow',function(){
+                                showPerson(filteredJSON,index+1);
+                            });
+                        }).insertAfter(dialogContent);
+                    }
+                    if(index>0){
+                        $('<button>',{class:"showPrevious floatLeft"}).html("Previous").on('click',function(){
+                            updateInviteeJSON('.dialog');
+                            searchInvitees();
+                            inputForm.fadeOut('slow',function(){
+                                showPerson(filteredJSON,index-1);
+                            });
+                        }).insertAfter(dialogContent);
+                    }
+                    if(!dialog.is(":visible")){
+                        dialog.fadeIn('slow');
+                    }else{
+                        inputForm.fadeIn('slow');
+                    }
+                },20);
+            };
+            $(".startProcessing").click(function(){
+                var filteredJSON = filterInvitees('.searchDiv');
+                console.log(filteredJSON);
+                $('.mask').show();
+                showPerson(filteredJSON,0);
+            });
+
+            $(".closeDialog").click(function(){
+                $('.mask').fadeOut('slow');
+                resetInputs();
+                $('.dialog').fadeOut('slow');
+            });
 
             var summarizeStatus= window.summarizeStatus = function(){
                 var inviteeJSON = getInviteeJSON();
@@ -328,6 +389,12 @@ require(["jquery"],
                         summaryJSON["Total calls"] = (summaryJSON["Total calls"] || 0)+1;
                         if(inviteeDetails.invitedFlag!="Yes"){
                             summaryJSON["Calls pending"] = (summaryJSON["Calls pending"] || 0)+1;
+                        }
+                    }
+                    if(inviteeDetails.inviteMode=="Post"){
+                        summaryJSON["Total post"] = (summaryJSON["Total post"] || 0)+1;
+                        if(inviteeDetails.invitedFlag!="Yes"){
+                            summaryJSON["Post pending"] = (summaryJSON["Post pending"] || 0)+1;
                         }
                     }
                     if(inviteeDetails.invitedFlag=="Yes"){
@@ -393,8 +460,8 @@ require(["jquery"],
 
             displayContent();
 
-            var showSearchScreen = function(){
-                var searchDiv = $('.searchDiv')
+            var showSearchScreen = function(searchDivInput){
+                var searchDiv = $(searchDivInput);
                 getTemplate('inputContentTemplate').appendTo(searchDiv);
                 searchDiv.find('.inputOnly').remove();
                 searchDiv.find('input,select').each(function(index,element){
@@ -421,7 +488,7 @@ require(["jquery"],
                 }
                 outputTemplate.insertAfter(searchDiv.find('.inputFormRow').last());
             };
-            showSearchScreen();
+            showSearchScreen('.searchDiv');
 
             var inviteeFields = [
                 {inviteeName:{content:"text"}},
@@ -429,7 +496,7 @@ require(["jquery"],
                 {location:{content:"text"}},
                 {address:{content:"text"}},
                 {tags:{content:"text"}},
-                {inviteMode:"Visit,Call"},
+                {inviteMode:"Visit,Call,Post"},
                 {invitedFlag:"Yes,No"},
                 {attendingFlag:"Yes,No"},
             ];

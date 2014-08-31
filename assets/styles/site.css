@@ -10,6 +10,9 @@
 .topMargin20{
 	margin-top:20px;
 }
+.zeroTopMargin{
+	margin-top:0px;
+}
 .bottomMargin20{
 	margin-bottom:20px;
 }
@@ -24,6 +27,9 @@
 }
 .clickable{
 	cursor:pointer;
+}
+.centered{
+	text-align:center;
 }
 label{
 	display:block;
@@ -69,6 +75,9 @@ tr:nth-child(odd){
 .floatLeft{
 	float:left;
 }
+.floatRight{
+	float:right;
+}
 .tabs{
     margin-bottom: 0;
 	
@@ -83,7 +92,9 @@ tr:nth-child(odd){
 	margin:5px 5px 0 0 ;
 }
 .tab.active{
-	background-color:yellow;
+	background-color:black;
+	color:white;
+	font-weight:bolder;
 }
 .tabContent{
 	margin-top:10px;
@@ -103,4 +114,33 @@ button{
 }
 .white{
 	color:white;
+}
+.dialog{
+	position:absolute;
+	top:15%;
+	left:30%;
+	width:450px;
+	min-height: 50%;
+	max-height: 70%;
+	background-color:white;
+	border:1px solid black;
+	border-radius:5px;
+	padding:20px;
+	z-index:1001;
+}
+.dialogContent{
+	height: 400px;
+	max-width: 100%;
+	overflow-y:auto;
+}
+.mask{
+	width:100%;
+  	height:100%;
+  	bottom: 0;
+  	right:  0;
+  	background: rgba(255,255,255,0.75);
+  	z-index:1000;
+  	position:fixed;
+  	left:0;
+  	top:0;	
 }
