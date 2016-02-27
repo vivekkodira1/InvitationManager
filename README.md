@@ -14,3 +14,5 @@ Planning to add:
 4. Import/Export to csv
 5. Improve quality to use templating (and remove structure coded in JS)
 6. Tests
+
+Live version at: http://vivekkodira.github.io/InvitationManager/
